@@ -1,0 +1,40 @@
+process_prompt:
+  description: >
+    1. Read and analyze the provided inputs:
+       - User prompt (in Czech or English)
+       - Schema metadata (containing Czech column names and values)
+    
+    2. Process the prompt by:
+       - Identifying key terms in either language
+       - Matching terms to their Czech equivalents in schema
+       - Handling Czech diacritics and special characters
+       - Converting geographical names between languages and similar concepts.
+
+    3. Create pandas query by:
+       - Using exact column names from schema (can be Czech or English)
+       - Matching user prompt terms to correct data values (in the schema we can 
+          find list of unique values in specific column)
+       - Ensuring proper string matching for Czech characters
+       - Ensuring that the pandas query returns maximum of 3 rows to avoid overload
+
+    4. Execute and validate:
+       - Use pandas query tool to execute the constructed query
+       - Verify if results match the original query intent
+       - Handle any errors by refining the pandas query
+       - Return results in YAML format
+
+    5. Post-process results:
+       - Ensure all Czech characters are preserved
+       - Format output maintaining bilingual clarity
+
+    6. If a user asks for some kind of aggregation, like sum, mean, etc.:
+       - Use the appropriate pandas function to perform the aggregation
+       - Return the result in a clear and concise format
+
+    User prompt to analyze: {prompt}
+    Schema metadata: {schema}
+  expected_output: >
+    1. Your pandas query.
+    2. YAML formatted output directly as the output from pandas query tool, containing records like:
+    - {index: 0, Kumulace čtvrtletí: Q1-Q3 2024, 'ČR, kraje': Česko, Ukazatel: Počet obyvatel na počátku období - celkem, value: 10900555}
+  agent: data_query_agent
