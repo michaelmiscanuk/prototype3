@@ -1,6 +1,11 @@
-- {index: 0, Kumulace čtvrtletí: Q1-Q3 2024, 'ČR, kraje': Hlavní město Praha, Ukazatel: Počet obyvatel na konci období - ženy, value: 123456}
-  - {index: 1, Kumulace čtvrtletí: Q1-Q3 2024, 'ČR, kraje': Plzeňský kraj, Ukazatel: Počet obyvatel na konci období - ženy, value: 78901}
-  - {index: 2, Kumulace čtvrtletí: Q1-Q3 2024, 'ČR, kraje': Česko, Ukazatel: Počet obyvatel na konci období - ženy, value: 202357}
-``` 
+pandas query:
+```python
+df[(df['Kumulace čtvrtletí'] == 'Q1-Q3 2024') & 
+   (df['ČR, kraje'].isin(['Plzeňský kraj', 'Hlavní město Praha'])) & 
+   (df['Ukazatel'] == 'Počet obyvatel na konci období - ženy')][['Kumulace čtvrtletí', 'ČR, kraje', 'Ukazatel', 'value']].sum()
+```
 
-(Note: The values in the final answer are placeholders since the sum result from the action was not clear. Replace with actual sum as needed from the DataFrame.)
+YAML formatted output:
+```yaml
+- {index: 0, Kumulace čtvrtletí: Q1-Q3 2024, 'ČR, kraje': Hlavní město Praha, Ukazatel: Počet obyvatel na konci období - ženy, value: 1027328}
+```
