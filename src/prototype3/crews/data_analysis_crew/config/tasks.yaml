@@ -1,5 +1,5 @@
 process_prompt:
-  description: >
+  description: |
     1. Read and analyze the provided inputs:
        - User prompt (in Czech or English)
        - Schema metadata (containing Czech column names and values)
@@ -15,7 +15,15 @@ process_prompt:
        - Matching user prompt terms to correct data values (in the schema we can 
           find list of unique values in specific column)
        - Ensuring proper string matching for Czech characters
-       - Ensuring that the pandas query returns maximum of 3 rows to avoid overload
+       - Be careful that data can contain records for totals, for example:
+          in Column "CZ, Region" we can find "Czech Republic" and "Regions". 
+          So you need to be carefully examine dimensional unique values in a schema.
+
+       Examples:
+       df[df["Column1"] == "Value1"]["value"]
+       df[df["Column1"].isin(["Value1", "Value2"])]["value"].sum()
+       df[(df["Column1"] == "Value1") & (df["Column2"] == "Value2")]["value"].mean()
+       df.groupby("Column1")["value"].sum()
 
     4. Execute and validate:
        - Use pandas query tool to execute the constructed query
@@ -33,8 +41,5 @@ process_prompt:
 
     User prompt to analyze: {prompt}
     Schema metadata: {schema}
-  expected_output: >
-    1. Your pandas query.
-    2. YAML formatted output directly as the output from pandas query tool, containing records like:
-    - {index: 0, Kumulace čtvrtletí: Q1-Q3 2024, 'ČR, kraje': Česko, Ukazatel: Počet obyvatel na počátku období - celkem, value: 10900555}
+  expected_output: A pandas query that correctly processes the input prompt, together with result of this query.
   agent: data_query_agent

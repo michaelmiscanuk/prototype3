@@ -2070,6 +2070,65 @@ wheels = [
 ]
 
 [[package]]
+name = "openinference-instrumentation"
+version = "0.1.26"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-sdk" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8e/80/4d42c4efce5d829c1fc310408553b971e3629746a643c03c8daa48e3182a/openinference_instrumentation-0.1.26.tar.gz", hash = "sha256:86c35f4963ddb19f7e6a573ecc1168b2b041239f064660b972b9f2b3a2ec0ccb", size = 17492 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/c5/818f6d2f72e89f3c149a77ea200d62acc83d37197d80865e7809054022e2/openinference_instrumentation-0.1.26-py3-none-any.whl", hash = "sha256:16bfbfbe329197573e6053f52440265fcd17dcfed3425f1295cb78fc2535f9f4", size = 22862 },
+]
+
+[[package]]
+name = "openinference-instrumentation-crewai"
+version = "0.1.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-instrumentation" },
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-semantic-conventions" },
+    { name = "typing-extensions" },
+    { name = "wrapt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2e/b2/7c4df84d1557f5f0abdafdec3d3e53e291eaadbc5b6a6d25fba43f42809b/openinference_instrumentation_crewai-0.1.7.tar.gz", hash = "sha256:500a4d672b941d6cba4e949e879c51cfc16c85fed65ca3499c2c78fe7bd59fcd", size = 10151 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8d/a3/14d0847c514095703237f55079235ebdd48fda2d6291b01376184f554654/openinference_instrumentation_crewai-0.1.7-py3-none-any.whl", hash = "sha256:49be2a675299753cc7d6d4c894b498a288242cc0798a47922fe7adb8b4f5b59a", size = 11660 },
+]
+
+[[package]]
+name = "openinference-instrumentation-litellm"
+version = "0.1.14"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-instrumentation" },
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-sdk" },
+    { name = "setuptools" },
+    { name = "wrapt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9d/cd/23e97620672aab42fefa7f8a8171567cf3d7ee30e321daf856ca0d0a3df7/openinference_instrumentation_litellm-0.1.14.tar.gz", hash = "sha256:567c680b5a7ecd13e020005aaac4180dfaa40385755c482d0edb259a82fac6fe", size = 14326 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e7/ca/1a4eb547043a587d00908bebbda40493a4bb3951f51a0ecb5cee542c9cf0/openinference_instrumentation_litellm-0.1.14-py3-none-any.whl", hash = "sha256:c82a531b0d1d865730d11b25ec13396227c5a2f0bab23cf87133a76048d3e593", size = 11910 },
+]
+
+[[package]]
+name = "openinference-semantic-conventions"
+version = "0.1.17"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ea/c1/851eed629ee65d38395f586eb4d82d9cc7c61c31de4c523394cc84ee4940/openinference_semantic_conventions-0.1.17.tar.gz", hash = "sha256:8c382f756344887c77f03c8def1702318d8d8cc8b4055f46924aabb7c89ed8bd", size = 9635 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fb/99/306c007c3a2accafcf47fc5c20ea81648c039292ca6770c9c1ab7914dd6b/openinference_semantic_conventions-0.1.17-py3-none-any.whl", hash = "sha256:919b7f2c0b0bdd406377288337d77046efb84866ad4805ad7a73a09368147398", size = 9384 },
+]
+
+[[package]]
 name = "openpyxl"
 version = "3.1.5"
 source = { registry = "https://pypi.org/simple" }
@@ -2552,10 +2611,22 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "crewai", extra = ["tools"] },
+    { name = "openinference-instrumentation-crewai" },
+    { name = "openinference-instrumentation-litellm" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-exporter-otlp-proto-http" },
+    { name = "opentelemetry-sdk" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "crewai", extras = ["tools"], specifier = ">=0.105.0,<1.0.0" }]
+requires-dist = [
+    { name = "crewai", extras = ["tools"], specifier = ">=0.105.0,<1.0.0" },
+    { name = "openinference-instrumentation-crewai" },
+    { name = "openinference-instrumentation-litellm" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-exporter-otlp-proto-http" },
+    { name = "opentelemetry-sdk" },
+]
 
 [[package]]
 name = "psycopg2-binary"

@@ -1,11 +1,1 @@
-pandas query:
-```python
-df[(df['Kumulace čtvrtletí'] == 'Q1-Q3 2024') & 
-   (df['ČR, kraje'].isin(['Plzeňský kraj', 'Hlavní město Praha'])) & 
-   (df['Ukazatel'] == 'Počet obyvatel na konci období - ženy')][['Kumulace čtvrtletí', 'ČR, kraje', 'Ukazatel', 'value']].sum()
-```
-
-YAML formatted output:
-```yaml
-- {index: 0, Kumulace čtvrtletí: Q1-Q3 2024, 'ČR, kraje': Hlavní město Praha, Ukazatel: Počet obyvatel na konci období - ženy, value: 1027328}
-```
+The total population of all regions except Prague at the end of Q3 2024 is 20,402,349.

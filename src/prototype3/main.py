@@ -26,11 +26,38 @@ class DataAnalysisFlow(Flow[DataAnalysisState]):
             self.state.schema = json.load(f)
         
         # Example prompts that should work:
-        prompts = [  # Changed from queries            
-            "What was the population of woman v Plzni a v Praze at the end of Q3 in 2024 combined as a sum?",
-            "What was the population of chicas v Plzni at the end of Q3 in 2024?"
+        prompts = [
+            # [0] Answer: 0.944 (676,069 men / 716,056 women) y
+            "What is the ratio of men to women in Prague at the end of Q3 2024?",
+
+            # [1] Answer: Středočeský kraj (Growth: 6,672 people, from 1,455,940 to 1,462,612) ?? 
+            "Which region had the highest population growth between start and end of Q3 2024?",
+
+            # [2] Answer: 9,505,112 people (Total 10,897,237 - Prague 1,392,125) ??
+            "What is the total population of all regions except Prague at the end of Q3 2024?",
+
+            # [3] Answer: Moravskoslezský: 603,498 vs Jihomoravský: 625,903 (difference: 22,405 more in Jihomoravský)
+            "Compare the number of women in Moravskoslezský kraj and Jihomoravský kraj at the end of Q3 2024",
+
+            # [4] Answer: 12.77% (1,392,125 / 10,897,237 * 100)
+            "What percentage of Czech total population lives in Prague at the end of Q3 2024?",
+
+            # [5] Answer: -5,730 people (1,183,474 - 1,189,204)
+            "How much did the population of Moravskoslezský kraj change during Q3 2024?",
+
+            # [6] Answer: Karlovarský kraj with 293,218 people
+            "Which region has the smallest total population at the end of Q3 2024?",
+
+            # [7] Answer: 51.68% women (625,903 / 1,227,503 * 100)
+            "What is the percentage of women in the total population of Jihomoravský kraj at the end of Q3 2024?",
+
+            # [8] Answer: 1.004 (5,549,314 women / 5,347,923 men)
+            "What is the ratio of women to men in the total Czech population at the end of Q3 2024?",
+
+            # [9] Answer: Praha (716,056), Středočeský (743,608), Jihomoravský (625,903) = 2,085,567 women
+            "What is the combined number of women in Prague, Středočeský and Jihomoravský kraj at the end of Q3 2024?"
         ]
-        self.state.prompt = prompts[0]  # Changed from user_query
+        self.state.prompt = prompts[3]  # Changed from user_query
 
     @listen(process_prompt)  # Changed from process_query
     def analyze_data(self):
@@ -68,4 +95,26 @@ def plot():
     flow.plot()
 
 if __name__ == "__main__":
+    
+
+    # OpenTelemetry setup
+    from opentelemetry import trace
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
+    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+
+    # Initialize tracer
+    tracer_provider = TracerProvider()
+    otlp_exporter = OTLPSpanExporter(endpoint="http://localhost:6006/v1/traces")
+    tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
+    trace.set_tracer_provider(tracer_provider)
+
+    # Instrument CrewAI and LiteLLM
+    from openinference.instrumentation.crewai import CrewAIInstrumentor
+    from openinference.instrumentation.litellm import LiteLLMInstrumentor
+
+    CrewAIInstrumentor().instrument(skip_dep_check=True)
+    LiteLLMInstrumentor().instrument()
+
+
     kickoff()
