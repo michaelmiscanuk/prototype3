@@ -1,6 +1,9 @@
-ČR, kraje                value
-  Jihomoravský kraj        625903
-  Moravskoslezský kraj     603498
-```
+- The number of women in "Moravskoslezský kraj" at the end of Q3 2024 is 625,903.
+  - The number of women in "Jihomoravský kraj" at the end of Q3 2024 is 603,498.
 
-This result shows that, at the end of Q3 2024, the number of women in Jihomoravský kraj was 625,903, and in Moravskoslezský kraj, it was 603,498.
+Pandas Query Used:
+```python
+df[(df['Kumulace čtvrtletí'] == 'Q1-Q3 2024') & 
+   (df['ČR, kraje'].isin(['Moravskoslezský kraj', 'Jihomoravský kraj'])) & 
+   (df['Ukazatel'] == 'Počet obyvatel na konci období - ženy')]['value']
+```

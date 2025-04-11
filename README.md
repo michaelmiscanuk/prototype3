@@ -44,6 +44,59 @@ This example, unmodified, will run the create a `report.md` file with the output
 
 The prototype3 Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
 
+## Setup in OneDrive Environment
+
+Since this project is housed in a OneDrive folder, special setup is required to handle hardlink incompatibilities:
+
+### Quick Start (Recommended)
+
+Use the safe launcher script to run the flow:
+
+```bash
+safe_crewai.bat flow kickoff
+```
+
+Or simply:
+
+```bash
+safe_crewai.bat run
+```
+
+### Alternative Methods
+
+1. **Direct Python execution:**
+   ```
+   python run_flow.py
+   ```
+
+2. **Standard CrewAI command** (may have hardlink issues with OneDrive):
+   ```
+   crewai flow kickoff
+   ```
+
+## Project Structure
+
+- `src/prototype3/`: Main project code
+  - `main.py`: Entry point and flow definition
+  - `crews/`: Agent crew definitions
+  - `tools/`: Custom tools for data analysis
+  - `utils/`: Utility functions
+- `data/`: Contains CSV data files
+- `metadata/`: Contains metadata about data schemas
+- `run_flow.py`: Alternative runner for OneDrive environments
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in your API keys:
+
+- `AZURE_OPENAI_API_KEY`: Azure OpenAI API key
+- `AZURE_OPENAI_ENDPOINT`: Azure OpenAI endpoint URL
+- `PHOENIX_API_KEY`: Arize Phoenix API key
+
+## Dependencies
+
+This project requires Python 3.10-3.12.
+
 ## Support
 
 For support, questions, or feedback regarding the {{crew_name}} Crew or crewAI.

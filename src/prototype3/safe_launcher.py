@@ -4,14 +4,23 @@ This module provides a hardlink-safe way to launch CrewAI flows.
 """
 import os
 import sys
-import subprocess
+import traceback
+from dotenv import load_dotenv
 from prototype3.main import kickoff as main_kickoff
 
+# Ensure environment variables are loaded
+load_dotenv()
+
 def is_in_cloud_folder():
-    """Check if current directory is likely in a cloud-synced folder"""
-    cwd = os.getcwd()
+    """
+    Check if current directory is likely in a cloud-synced folder
+    
+    Returns:
+        bool: True if in a cloud-synced folder, False otherwise
+    """
+    cwd = os.getcwd().lower()
     cloud_keywords = ["onedrive", "dropbox", "google drive", "box", "icloud"]
-    return any(keyword in cwd.lower() for keyword in cloud_keywords)
+    return any(keyword in cwd for keyword in cloud_keywords)
 
 def kickoff():
     """
@@ -21,18 +30,25 @@ def kickoff():
     # Set environment variable to disable hardlinks
     os.environ["UV_NO_HARDLINKS"] = "1"
     
-    # If in OneDrive or other cloud folder, run directly with Python
-    if is_in_cloud_folder() or os.environ.get("FORCE_DIRECT_PYTHON") == "1":
-        print("📁 Detected cloud-synced folder. Running with direct Python execution...")
+    # Log the execution environment
+    if is_in_cloud_folder():
+        print("📁 Detected cloud-synced folder (OneDrive/Dropbox/etc.)")
+        
+    if os.environ.get("FORCE_DIRECT_PYTHON") == "1":
+        print("⚙️ FORCE_DIRECT_PYTHON is enabled, using direct execution")
+        
+    # Run with the appropriate method
+    try:
+        print("🚀 Starting CrewAI flow execution...")
         main_kickoff()
-    else:
-        print("🚀 Running with standard CrewAI flow launcher...")
-        try:
-            main_kickoff()
-        except Exception as e:
-            print(f"🔄 Error with standard execution: {e}")
-            print("🔄 Falling back to direct Python execution...")
-            main_kickoff()
+        print("✅ Flow execution completed successfully")
+        return True
+    except Exception as e:
+        print(f"❌ Error during flow execution: {e}")
+        print("Detailed error:")
+        traceback.print_exc()
+        return False
 
 if __name__ == "__main__":
-    kickoff()
+    success = kickoff()
+    sys.exit(0 if success else 1)

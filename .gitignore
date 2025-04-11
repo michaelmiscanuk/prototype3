@@ -1,5 +1,15 @@
+# Environment variables
 .env
+
+# Python cache files
 __pycache__/
-lib/
-.DS_Store
+
+# Virtual environments
 .venv
+lib/
+
+# Operating system files
+.DS_Store
+
+# Project specific
+analysis_result.txt
