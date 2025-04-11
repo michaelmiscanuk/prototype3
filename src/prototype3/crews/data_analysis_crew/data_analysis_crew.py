@@ -5,6 +5,8 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.knowledge.source.json_knowledge_source import JSONKnowledgeSource
 from crewai.knowledge.source.csv_knowledge_source import CSVKnowledgeSource
 import json
+from crewai.project import CrewBase, agent, crew, task, before_kickoff, after_kickoff
+
 
 from dotenv import load_dotenv
 from .tools.pandas_query_tool import PandasQueryTool
@@ -55,7 +57,6 @@ class DataAnalysisCrew:
         azure_endpoint=os.getenv('AZURE_OPENAI_ENDPOINT'),
         api_key=os.getenv('AZURE_OPENAI_API_KEY')
     )
-
 
     @agent
     def data_query_agent(self) -> Agent:

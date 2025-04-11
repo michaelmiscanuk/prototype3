@@ -1,4 +1,3 @@
-ČR, kraje             | value
-----------------------|------
-Jihomoravský kraj     | 625,903
-Moravskoslezský kraj  | 603,498
+ČR, kraje:
+  - Jihomoravský kraj: 625,903
+  - Moravskoslezský kraj: 603,498

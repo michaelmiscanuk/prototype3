@@ -1,0 +1,2 @@
+[config]
+no_hardlinks = true

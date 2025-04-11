@@ -5,17 +5,31 @@ description = "prototype3 using crewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.13"
 dependencies = [
+    "python-dotenv",
+    "duckdb",
+
     "crewai[tools]>=0.105.0,<1.0.0",
+    "crewai-tools",
+
+    "openai",
+
     "opentelemetry-api",
     "opentelemetry-sdk",
     "opentelemetry-exporter-otlp-proto-http",
     "openinference-instrumentation-crewai",
     "openinference-instrumentation-litellm",
+    "openinference-instrumentation>=0.1.21",
+    "openinference-instrumentation-openai",
+    
+    "arize-phoenix>=8.24.0",
+    "arize-phoenix-otel>=0.8.0"
 ]
 
 [project.scripts]
 kickoff = "prototype3.main:kickoff"
 plot = "prototype3.main:plot"
+# Add alternative launch method
+safe_kickoff = "prototype3.safe_launcher:kickoff"
 
 [build-system]
 requires = ["hatchling"]
@@ -24,3 +38,7 @@ build-backend = "hatchling.build"
 [tool.crewai]
 type = "flow"
 python_path = ".venv\\Scripts\\python.exe"  # Using Windows path format
+
+[tool.uv]
+# Add UV specific configuration
+no_hardlinks = true

@@ -1,7 +1,23 @@
 #!/usr/bin/env python
 import os
 import json
+from dotenv import load_dotenv
 from pydantic import BaseModel
+from phoenix.otel import register
+
+# Load environment variables
+load_dotenv()
+
+# Configure Phoenix tracer using the successful approach
+print("Initializing Phoenix tracing...")
+tracer_provider = register(
+    project_name="CrewAI_Prototype3",  # Project name that will appear in the UI
+    auto_instrument=True               # Auto-instrument supported libraries
+)
+tracer = tracer_provider.get_tracer(__name__)
+
+print("✅ Phoenix tracing initialized")
+
 from crewai.flow import Flow, listen, start
 from prototype3.crews.data_analysis_crew.data_analysis_crew import DataAnalysisCrew
 from prototype3.tools.path_debug import debug_paths
@@ -13,7 +29,7 @@ class DataAnalysisState(BaseModel):
     result: str = ""
 
 class DataAnalysisFlow(Flow[DataAnalysisState]):
-    
+    @tracer.chain
     @start()
     def process_prompt(self):  # Changed from process_query
         # Debug paths before starting
@@ -27,13 +43,13 @@ class DataAnalysisFlow(Flow[DataAnalysisState]):
         
         # Example prompts that should work:
         prompts = [
-            # [0] Answer: 0.944 (676,069 men / 716,056 women) y
+            # [0] Answer: 0.944 (676,069 men / 716,056 women)
             "What is the ratio of men to women in Prague at the end of Q3 2024?",
 
-            # [1] Answer: Středočeský kraj (Growth: 6,672 people, from 1,455,940 to 1,462,612) ?? 
+            # [1] Answer: Středočeský kraj (Growth: 6,672 people, from 1,455,940 to 1,462,612)
             "Which region had the highest population growth between start and end of Q3 2024?",
 
-            # [2] Answer: 9,505,112 people (Total 10,897,237 - Prague 1,392,125) ??
+            # [2] Answer: 9,505,112 people (Total 10,897,237 - Prague 1,392,125)
             "What is the total population of all regions except Prague at the end of Q3 2024?",
 
             # [3] Answer: Moravskoslezský: 603,498 vs Jihomoravský: 625,903 (difference: 22,405 more in Jihomoravský)
@@ -59,6 +75,7 @@ class DataAnalysisFlow(Flow[DataAnalysisState]):
         ]
         self.state.prompt = prompts[3]  # Changed from user_query
 
+    @tracer.chain
     @listen(process_prompt)  # Changed from process_query
     def analyze_data(self):
         print("[DEBUG] Starting analyze_data method")
@@ -80,6 +97,7 @@ class DataAnalysisFlow(Flow[DataAnalysisState]):
             print(f"[DEBUG] Error type: {type(e)}")
             raise
 
+    @tracer.chain
     @listen(analyze_data)
     def save_result(self):
         print("Saving analysis result")
@@ -87,34 +105,21 @@ class DataAnalysisFlow(Flow[DataAnalysisState]):
             f.write(self.state.result)
 
 def kickoff():
-    flow = DataAnalysisFlow()
-    flow.kickoff()
+    # Add a trace for the whole flow execution
+    with tracer.start_as_current_span("crewai_flow_execution") as span:
+        span.set_attribute("flow_name", "DataAnalysisFlow")
+        
+        flow = DataAnalysisFlow()
+        flow.kickoff()
 
 def plot():
     flow = DataAnalysisFlow()
     flow.plot()
 
-if __name__ == "__main__":
-    
-
-    # OpenTelemetry setup
-    from opentelemetry import trace
-    from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.sdk.trace.export import BatchSpanProcessor
-    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-
-    # Initialize tracer
-    tracer_provider = TracerProvider()
-    otlp_exporter = OTLPSpanExporter(endpoint="http://localhost:6006/v1/traces")
-    tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
-    trace.set_tracer_provider(tracer_provider)
-
-    # Instrument CrewAI and LiteLLM
-    from openinference.instrumentation.crewai import CrewAIInstrumentor
-    from openinference.instrumentation.litellm import LiteLLMInstrumentor
-
-    CrewAIInstrumentor().instrument(skip_dep_check=True)
-    LiteLLMInstrumentor().instrument()
-
-
+def main():
+    """Entry point for direct Python execution without UV"""
     kickoff()
+
+if __name__ == "__main__":
+    # Use the main function for direct Python execution
+    main()
