@@ -1,1 +1,4 @@
-The total population of all regions except Prague at the end of Q3 2024 is 20,402,349.
+ČR, kraje             | value
+----------------------|------
+Jihomoravský kraj     | 625,903
+Moravskoslezský kraj  | 603,498

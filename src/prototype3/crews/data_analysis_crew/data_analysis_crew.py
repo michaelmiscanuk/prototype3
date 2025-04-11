@@ -23,7 +23,7 @@ litellm.api_key = os.getenv('AZURE_OPENAI_API_KEY')
 
 # Explicitly map your model name to your Azure deployment name with provider prefix
 litellm.model_alias_map = {
-    "gpt-4o": "azure/gpt-4o_mimi_test"
+    "gpt-4o": "azure/gpt-4o__test1"
 }
 
 
@@ -48,7 +48,7 @@ class DataAnalysisCrew:
     tasks_config = "config/tasks.yaml"
     
     llm = AzureChatOpenAI(
-        deployment_name="gpt-4o_mimi_test",
+        deployment_name="gpt-4o__test1",
         model_name="gpt-4o",
         openai_api_version="2024-05-01-preview",
         temperature=0.7,
