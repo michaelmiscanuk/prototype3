@@ -1,3 +1,6 @@
-ČR, kraje:
-  - Jihomoravský kraj: 625,903
-  - Moravskoslezský kraj: 603,498
+ČR, kraje                value
+  Jihomoravský kraj        625903
+  Moravskoslezský kraj     603498
+```
+
+This result shows that, at the end of Q3 2024, the number of women in Jihomoravský kraj was 625,903, and in Moravskoslezský kraj, it was 603,498.
