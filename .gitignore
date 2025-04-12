@@ -13,3 +13,6 @@ lib/
 
 # Project specific
 analysis_result.txt
+
+# Temporary files
+t1.ipynb
