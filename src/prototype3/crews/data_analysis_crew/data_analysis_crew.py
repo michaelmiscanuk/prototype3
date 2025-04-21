@@ -68,5 +68,6 @@ class DataAnalysisCrew:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            llm=self.llm
+            llm=self.llm,
+            enable_events=False
         )

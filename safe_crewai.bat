@@ -26,6 +26,9 @@ if /i "%action%"=="flow" (
     if /i "%command%"=="kickoff" (
         echo Running flow kickoff safely...
         python -m prototype3.safe_launcher
+    ) else if /i "%command%"=="batch" (
+        echo Running batch analysis safely...
+        python -m prototype3.batch_processor
     ) else (
         echo Unknown flow command: %command%
     )

@@ -1,9 +1,11 @@
-- The number of women in "Moravskoslezský kraj" at the end of Q3 2024 is 625,903.
-  - The number of women in "Jihomoravský kraj" at the end of Q3 2024 is 603,498.
+The number of men in Prague ("Hlavní město Praha") at the end of Q3 2024 is 676,069.
 
-Pandas Query Used:
+Pandas Query:
 ```python
-df[(df['Kumulace čtvrtletí'] == 'Q1-Q3 2024') & 
-   (df['ČR, kraje'].isin(['Moravskoslezský kraj', 'Jihomoravský kraj'])) & 
-   (df['Ukazatel'] == 'Počet obyvatel na konci období - ženy')]['value']
+df[(df['Kumulace čtvrtletí'] == 'Q1-Q3 2024') & (df['ČR, kraje'] == 'Hlavní město Praha') & (df['Ukazatel'] == 'Počet obyvatel na konci období - muži')]['value']
+```
+
+Result:
+```yaml
+value: 676069
 ```
