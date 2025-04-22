@@ -6,6 +6,12 @@ setlocal
 set UV_NO_HARDLINKS=1
 set FORCE_DIRECT_PYTHON=1
 
+:: Use Anaconda Python - adjust this path as needed
+set PYTHON_CMD="%USERPROFILE%\anaconda3\envs\crewai-flows3\python.exe"
+
+:: Set working directory to script location
+cd /d "%~dp0"
+
 :: Get command line arguments
 set "action=%1"
 set "command=%2"
@@ -25,16 +31,16 @@ if "%action%"=="" (
 if /i "%action%"=="flow" (
     if /i "%command%"=="kickoff" (
         echo Running flow kickoff safely...
-        python -m prototype3.safe_launcher
+        %PYTHON_CMD% -m prototype3.safe_launcher
     ) else if /i "%command%"=="batch" (
         echo Running batch analysis safely...
-        python -m prototype3.batch_processor
+        %PYTHON_CMD% -m prototype3.batch_processor
     ) else (
         echo Unknown flow command: %command%
     )
 ) else if /i "%action%"=="run" (
     echo Running default entry point safely...
-    python run_flow.py
+    %PYTHON_CMD% run_flow.py
 ) else (
     echo Unknown action: %action%
 )

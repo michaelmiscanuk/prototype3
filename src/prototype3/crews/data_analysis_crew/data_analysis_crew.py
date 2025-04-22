@@ -13,6 +13,7 @@ from .tools.pandas_query_tool import PandasQueryTool
 from langchain_openai import AzureChatOpenAI
 import litellm
 
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -49,7 +50,7 @@ class DataAnalysisCrew:
     def data_query_agent(self) -> Agent:
         return Agent(
             config=self.agents_config["data_query_agent"],
-            verbose=True,
+            verbose=False,
             tools=[PandasQueryTool()],
             llm=self.llm
         )
@@ -67,7 +68,7 @@ class DataAnalysisCrew:
             agents=self.agents,
             tasks=self.tasks,
             process=Process.sequential,
-            verbose=True,
+            verbose=False,
             llm=self.llm,
             enable_events=False
         )

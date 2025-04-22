@@ -69,6 +69,7 @@ class DataAnalysisFlow(Flow[DataAnalysisState]):
     @listen(analyze_data)
     def save_result(self):
         print("Saving analysis result")
+        # Changed to append mode - 'a' instead of 'w'
         with open("analysis_results.txt", "a", encoding='utf-8') as f:
             f.write(f"\nPrompt: {self.state.prompt}\n")
             f.write(f"Result: {self.state.result}\n")

@@ -1,19 +1,14 @@
 
+Prompt: What is the amount of men in Prague at the end of Q3 2024?
+Result: value: 
+  - 676069
+--------------------------------------------------
+
 Prompt: What is the amount of women in Prague at the end of Q3 2024?
 Result: The amount of women in Prague at the end of Q3 2024 is 716,056.
 
-Pandas Query Used:
-```python
-df[(df['Kumulace čtvrtletí'] == 'Q1-Q3 2024') & 
-   (df['ČR, kraje'] == 'Hlavní město Praha') & 
-   (df['Ukazatel'] == 'Počet obyvatel na konci období - ženy')]['value']
-```
-
-Result:
-716,056
---------------------------------------------------
-
-Prompt: What is the amount of men in Prague at the end of Q3 2024?
-Result: value: 676069
-description: The amount of men in Prague ("Hlavní město Praha") at the end of Q3 2024 ("Q1-Q3 2024") is 676,069.
+YAML Format:
+result:
+  value: 716056
+  description: "The amount of women in Prague at the end of Q3 2024."
 --------------------------------------------------
